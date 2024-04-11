@@ -1,6 +1,4 @@
-﻿#include<iostream>
-#include<string>
-
+#include<iostream>
 
 using namespace std;
 
@@ -15,7 +13,7 @@ public:
         this->pow = pow;
         next = nullptr;
     }
-    };
+};
 
 class Monomial {
 private:
@@ -33,11 +31,8 @@ public:
             cout << temp->coef << "x^" << temp->pow;
             temp = temp->next;
         }
-        cout << endl;
+        cout << "\n";
     }
-    Monomial operator - (const Monomial& B) const {
-        
-        }
     ~Monomial() {
         Node* current = head;
         while (current != nullptr) {
@@ -45,6 +40,52 @@ public:
             delete current;
             current = next;
         }
+    }
+    Monomial operator + (const Monomial& A) {
+        Monomial result;
+        Node* temp = head;
+        Node* temp1 = A.head;
+        if (temp->pow == temp1->pow) {
+            float resCoef = temp->coef + temp1->coef;
+            while (temp != nullptr) {
+                cout << resCoef << "x^" << temp->pow;
+                temp = temp->next;
+            }
+        }
+        else {
+            while (temp != nullptr && temp1 != nullptr) {
+                if (temp1->pow > temp->pow) {
+                    if (temp->coef < 0)
+                        cout << temp1->coef << "x^" << temp->pow << " " << temp->coef << "x^" << temp1->pow;
+                    else
+                        cout << temp1->coef << "x^" << temp->pow << " + " << temp->coef << "x^" << temp1->pow;
+                }
+                else {
+                    if (temp1->coef < 0)
+                        cout << temp->coef << "x^" << temp->pow << " " << temp1->coef << "x^" << temp1->pow;
+                    else
+                        cout << temp->coef << "x^" << temp->pow << " + " << temp1->coef << "x^" << temp1->pow;
+                }
+                temp = temp->next;
+                temp1 = temp1->next;
+            }
+        }
+        return result;
+    }
+    Monomial operator * (const Monomial& A) {
+        Monomial result;
+        Node* temp = head;
+        Node* temp1 = A.head;
+        float resCoef;
+        float resPow;
+        while (temp != nullptr && temp1 != nullptr) {
+            resCoef = temp->coef * temp1->coef;
+            resPow = temp->pow + temp1->pow;
+            cout << resCoef << "x^" << resPow;
+            temp = temp->next;
+            temp1 = temp1->next;
+        }
+        return result;
     }
 };
 
@@ -83,7 +124,7 @@ public:
                 cout << " ";
             temp = temp->next;
         }
-        cout << endl;
+        cout << "\n";
     }
     ~Polynomial() {
         Node* temp;
@@ -95,25 +136,21 @@ public:
     }
 };
 
-class Equation : public Polynomial {
+class Equation {
 private:
     Node* head;
 public:
 
-    Equation() : Polynomial() {
+    Equation() {
         head = nullptr;
     }
     Equation(float coef, int pow) {
         head = new Node(coef, pow);
     }
-    float func_x(float a, float b, float c, int x) {
-        return a * x * x + b * x + c;
-    }
-        
     void Print() {
         Node* temp = head;
         while (temp != nullptr) {
-            cout << temp->coef << "x^" << temp->pow<<" ";
+            cout << temp->coef << "x^" << temp->pow << " ";
             if (temp->next != nullptr) {
                 if (temp->next->coef > 0)
                     cout << "+ ";
@@ -136,19 +173,36 @@ public:
             temp->next = newNode;
         }
     }
-
-    
+    void convertFunc() {
+        Node* temp = head;
+        cout << "Equation: ";
+        while (temp != nullptr) {
+            cout << temp->coef;
+            if (temp->pow != 0) {
+                cout << "x";
+                if (temp->pow != 1) {
+                    cout << "^" << temp->pow;
+                }
+            }
+            if (temp->next != nullptr) {
+                if (temp->next->coef > 0) {
+                    cout << " + ";
+                }
+                else {
+                    cout << " ";
+                }
+            }
+            temp = temp->next;
+        }
+        cout << " = 0" << endl;
+    }
 };
 
-
-
-int main()
-{
-    Equation A(2,4);
-    A.addNode(3, 3);
+int main() {
+    Equation A;
     A.addNode(2, 2);
-    A.addNode(2, 0);
-    A.Print();
-    A.func_x(2,3,2,2);
+    A.addNode(-3, 1);
+    A.addNode(-4, 0);
+    A.convertFunc();
     return 0;
 }
