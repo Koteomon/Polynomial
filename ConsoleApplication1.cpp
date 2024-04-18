@@ -385,10 +385,8 @@ public:
 };
 
 class Equation {
-private:
-    Node* head;
 public:
-
+    Node* head;
     Equation() {
         head = nullptr;
     }
@@ -529,16 +527,42 @@ public:
         result.convertFunc();
         return result;
     }
+    Equation operator + (const Equation& A) {
+        Polynomial result;
+        Node* temp = head;
+        Node* temp1 = A.head;
+        while (temp != nullptr && temp1 != nullptr) {
+            if (temp->pow == temp1->pow) {
+                result.addNode(temp->coef + temp1->coef, temp->pow);
+                temp = temp->next;
+                temp1 = temp1->next;
+            }
+            else if(temp->pow < temp1->pow) {
+                result.addNode(temp1->coef, temp1->pow);
+                temp1 = temp1->next;
+            }
+            else {
+                result.addNode(temp->coef, temp->pow);
+                temp = temp->next;
+            } 
+        }
+        while (temp != nullptr) {
+            result.addNode(temp->coef, temp->pow);
+            temp = temp->next;
+        }
+        while (temp1 != nullptr) {
+            result.addNode(-temp1->coef, temp1->pow);
+            temp1 = temp1->next;
+        }
+        cout << result;
+        return result;
+    }
 };
 
 int main() {
-    Monomial a(2,2);
     Equation d(5,2);
     d.addNode(4,1);
     d.addNode(7,0);
-    cout<<a;
-    cout<<d;
-    d+a;
-    d-a;
+    
     return 0;
 }
