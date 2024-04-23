@@ -527,8 +527,24 @@ public:
         result.convertFunc();
         return result;
     }
+    Equation operator * (const Polynomial& A){
+        Equation res;
+        Node* temp = head;
+        Node* temp1 = A.head;
+        while(temp != nullptr){
+            while(temp1 != nullptr){
+                res.addNode(temp->coef * temp1->coef, temp->pow + temp1->pow);
+                temp1=temp1->next;
+            }
+            temp=temp->next;
+            temp1= A.head;
+        }
+        
+        cout<<res;
+        return res;
+    }
     Equation operator + (const Equation& A) {
-        Polynomial result;
+        Equation result;
         Node* temp = head;
         Node* temp1 = A.head;
         while (temp != nullptr && temp1 != nullptr) {
@@ -557,12 +573,31 @@ public:
         cout << result;
         return result;
     }
+    Equation operator * (const Equation& A){
+        Equation res;
+        Node* temp = head;
+        Node* temp1 = A.head;
+        while(temp != nullptr){
+            while(temp1 != nullptr){
+                res.addNode(temp->coef * temp1->coef, temp->pow + temp1->pow);
+                temp1=temp1->next;
+            }
+            temp=temp->next;
+            temp1= A.head;
+        }
+        
+        cout<<res;
+        return res;
+    }
 };
 
 int main() {
     Equation d(5,2);
     d.addNode(4,1);
     d.addNode(7,0);
-    
+    Polynomial c(2,2);
+    c.addNode(2,1);
+    c.addNode(1,0);
+    d*c;
     return 0;
 }
