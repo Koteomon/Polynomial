@@ -157,7 +157,7 @@ public:
         Node* temp = head;
         Node* temp1 = A.head;
         while (temp != nullptr && temp1 != nullptr) {
-            if (temp->coef+temp1->coef == 1)
+            if (temp->coef + temp1->coef == 1)
             {
                 temp = temp->next;
                 temp1 = temp1->next;
@@ -174,7 +174,7 @@ public:
         cout << res;
         return res;
     }
-    
+
 };
 
 class Polynomial {
@@ -317,14 +317,14 @@ public:
                 temp = temp->next;
                 temp1 = temp1->next;
             }
-            else if(temp->pow < temp1->pow) {
+            else if (temp->pow < temp1->pow) {
                 result.addNode(temp1->coef, temp1->pow);
                 temp1 = temp1->next;
             }
             else {
                 result.addNode(temp->coef, temp->pow);
                 temp = temp->next;
-            } 
+            }
         }
         while (temp != nullptr) {
             result.addNode(temp->coef, temp->pow);
@@ -367,20 +367,20 @@ public:
         cout << result;
         return result;
     }
-    Polynomial operator [] (const int& A){
+    Polynomial operator [] (const int& A) {
         Polynomial res;
-        Node* temp=head;
-        while(temp!=nullptr){
-            if(A!=temp->pow){
-                temp=temp->next;
+        Node* temp = head;
+        while (temp != nullptr) {
+            if (A != temp->pow) {
+                temp = temp->next;
             }
-            else{
+            else {
                 res.addNode(temp->coef, temp->pow);
-                cout<<res<<endl;
+                cout << res << endl;
                 return res;
+            }
         }
-    }
-    return res;
+        return res;
     }
 };
 
@@ -467,10 +467,10 @@ public:
         cout << endl;
         return out;
     }
-    Equation operator + (const Monomial& A){
+    Equation operator + (const Monomial& A) {
         Equation result;
-        Node* temp=head;
-        Node* temp1=A.head;
+        Node* temp = head;
+        Node* temp1 = A.head;
         while (temp != nullptr && temp1 != nullptr) {
             if (temp->pow == temp1->pow) {
                 result.addNode(temp->coef + temp1->coef, temp1->pow);
@@ -497,7 +497,7 @@ public:
         result.convertFunc();
         return result;
     }
-    Equation operator - (const Monomial& A){
+    Equation operator - (const Monomial& A) {
         Equation result;
         Node* temp = head;
         Node* temp1 = A.head;
@@ -527,20 +527,45 @@ public:
         result.convertFunc();
         return result;
     }
-    Equation operator * (const Polynomial& A){
+    Equation operator / (const Monomial& A) {
         Equation res;
         Node* temp = head;
         Node* temp1 = A.head;
-        while(temp != nullptr){
-            while(temp1 != nullptr){
-                res.addNode(temp->coef * temp1->coef, temp->pow + temp1->pow);
-                temp1=temp1->next;
-            }
-            temp=temp->next;
-            temp1= A.head;
+        while (temp != nullptr && temp1 != nullptr) {
+            res.addNode(temp->coef / temp1->coef, temp->pow - temp1->pow);
+            temp = temp->next;
         }
-        
-        cout<<res;
+        temp1 = temp1->next;
+        res.convertFunc();
+        return res;
+    }
+    Equation operator *(const Monomial& A) {
+        Equation res;
+        Node* temp = head;
+        Node* temp1 = A.head;
+        while (temp != nullptr && temp1 != nullptr) {
+            res.addNode(temp->coef * temp1->coef, temp->pow + temp1->pow);
+            temp = temp->next;
+
+        }
+        temp1 = temp1->next;
+        res.convertFunc();
+        return res;
+    }
+    Equation operator * (const Polynomial& A) {
+        Equation res;
+        Node* temp = head;
+        Node* temp1 = A.head;
+        while (temp != nullptr) {
+            while (temp1 != nullptr) {
+                res.addNode(temp->coef * temp1->coef, temp->pow + temp1->pow);
+                temp1 = temp1->next;
+            }
+            temp = temp->next;
+            temp1 = A.head;
+        }
+
+        cout << res;
         return res;
     }
     Equation operator + (const Equation& A) {
@@ -553,14 +578,14 @@ public:
                 temp = temp->next;
                 temp1 = temp1->next;
             }
-            else if(temp->pow < temp1->pow) {
+            else if (temp->pow < temp1->pow) {
                 result.addNode(temp1->coef, temp1->pow);
                 temp1 = temp1->next;
             }
             else {
                 result.addNode(temp->coef, temp->pow);
                 temp = temp->next;
-            } 
+            }
         }
         while (temp != nullptr) {
             result.addNode(temp->coef, temp->pow);
@@ -573,31 +598,75 @@ public:
         cout << result;
         return result;
     }
-    Equation operator * (const Equation& A){
+    Equation operator - (const Equation& A) {
+        Equation result;
+        Node* temp = head;
+        Node* temp1 = A.head;
+        while (temp != nullptr && temp1 != nullptr) {
+            if (temp->pow == temp1->pow) {
+                result.addNode(temp->coef - temp1->coef, temp->pow);
+                temp = temp->next;
+                temp1 = temp1->next;
+            }
+            else if (temp->pow < temp1->pow) {
+                result.addNode(temp->coef, temp->pow);
+                temp = temp->next;
+            }
+            else {
+                result.addNode(-temp1->coef, temp1->pow);
+                temp1 = temp1->next;
+            }
+        }
+        while (temp != nullptr) {
+            result.addNode(temp->coef, temp->pow);
+            temp = temp->next;
+        }
+        while (temp1 != nullptr) {
+            result.addNode(-temp1->coef, temp1->pow);
+            temp1 = temp1->next;
+        }
+        cout << result;
+        return result;
+    }
+    Equation operator [] (const int& A) {
+        Equation res;
+        Node* temp = head;
+        while (temp != nullptr) {
+            if (A != temp->pow) {
+                temp = temp->next;
+            }
+            else {
+                res.addNode(temp->coef, temp->pow);
+                cout << res << endl;
+                return res;
+            }
+        }
+        return res;
+    }
+    Equation operator * (const Equation& A) {
         Equation res;
         Node* temp = head;
         Node* temp1 = A.head;
-        while(temp != nullptr){
-            while(temp1 != nullptr){
+        while (temp != nullptr) {
+            while (temp1 != nullptr) {
                 res.addNode(temp->coef * temp1->coef, temp->pow + temp1->pow);
-                temp1=temp1->next;
+                temp1 = temp1->next;
             }
-            temp=temp->next;
-            temp1= A.head;
+            temp = temp->next;
+            temp1 = A.head;
         }
-        
-        cout<<res;
+        cout << res;
         return res;
     }
 };
 
 int main() {
-    Equation d(5,2);
-    d.addNode(4,1);
-    d.addNode(7,0);
-    Polynomial c(2,2);
-    c.addNode(2,1);
-    c.addNode(1,0);
-    d*c;
+    Equation c(7, 2);
+    c.addNode(1, 1);
+    c.addNode(3, 0);
+    Polynomial d(2, 3);
+    d.addNode(7, 2);
+    d.addNode(3, 1);
+    c * d;
     return 0;
 }
