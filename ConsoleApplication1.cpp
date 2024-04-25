@@ -442,6 +442,36 @@ public:
         }
         cout << " = 0" << endl;
     }
+    void sort(){
+    Node* temp = head;
+    Equation res;
+    while(temp != nullptr){
+        int powNow = temp->pow;
+        int coefNow = temp->coef;
+        Node* current = res.head;
+        Node* prev = nullptr;
+        while(current != nullptr && current->pow > powNow){
+            prev = current;
+            current = current->next;
+        }
+        if(current != nullptr && current->pow == powNow){
+            current->coef += coefNow;
+        }
+        else{
+            Node* newNode = new Node(coefNow, powNow);
+            if(prev == nullptr){
+                newNode->next = res.head;
+                res.head = newNode;
+            }
+            else{
+                prev->next = newNode;
+                newNode->next = current;
+            }
+        }
+        temp = temp->next;
+    }
+    cout<<res;
+}
     friend ostream& operator<< (ostream& out, const Equation& A) {
         Node* temp = A.head;
         while (temp != nullptr) {
@@ -664,9 +694,11 @@ int main() {
     Equation c(7, 2);
     c.addNode(1, 1);
     c.addNode(3, 0);
-    Polynomial d(2, 3);
-    d.addNode(7, 2);
-    d.addNode(3, 1);
-    c * d;
+    Equation d(2, 2);
+    d.addNode(7, 1);
+    d.addNode(3, 0);
+    Equation a;
+    a = c * d;
+    a.sort();
     return 0;
 }
