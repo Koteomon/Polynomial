@@ -1,0 +1,48 @@
+#include"C:\Users\Student\Documents\equation.h"
+#include<complex> 
+#include<cmath>
+
+using namespace std; 
+ 
+void Equation::solveEquation(Equation& A) { 
+    Node* temp = A.head; 
+    int i=0;
+    float a;
+    float b;
+    float c;
+    complex <float> z;
+	while(temp!=nullptr){
+		if(temp->pow==2)
+			a=temp->coef;
+		else if(temp->pow==1)
+			b=temp->coef;
+		else
+			c=temp->coef;
+		temp=temp->next;
+		i++;
+}
+	float Disc=b*b-(4*a*c);
+	if(Disc>0){
+		float x1=(-b+sqrt(Disc))/(2*a);
+		float x2=(-b-sqrt(Disc))/(2*a);
+		cout<<"x1= "<<x1<<"\n"<<"x2= "<<x2<<endl;
+	}
+	else if(Disc == 0){
+		float x=-b/(2*a);
+		cout<<"x= "<<x<<endl;
+	}
+	else{
+		z.real(-b/(2*a));
+		z.imag(abs(Disc)/(2*a));
+		cout<<"x1= "<<z.real()<<"+i*"<<z.imag()<<endl;
+		cout<<"x2= "<<z.real()<<"-i*"<<z.imag()<<endl;
+	}
+	}
+	
+int main() { 
+ Equation A(6,2); 
+ A.addNode(4, 1); 
+ A.addNode(1, 0); 
+ A.solveEquation(A); 
+ return 0; 
+}
